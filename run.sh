@@ -1,5 +1,5 @@
 #!/bin/bash
-
+python3.7 -m venv env
 source env/bin/activate
 
 export LINES=1000000
