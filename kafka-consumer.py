@@ -26,7 +26,7 @@ if __name__ == "__main__":
     consumer = create_consumer(server)
     consumer.subscribe([topic])
     while True:
-        msg = consumer.poll(0.1)
+        msg = consumer.poll(1.0)
         if msg is None:
             continue
         if msg.error():

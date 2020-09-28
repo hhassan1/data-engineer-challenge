@@ -13,7 +13,6 @@ from datetime import timedelta
 from threading import Thread
 
 
-
 class StreamReader(Thread):
     MAX_SHUTDOWN_COUNTER = 6
     POLL_TIMEOUT = 1.0
@@ -111,6 +110,7 @@ class StreamStatisticsRunner(Thread):
         self._queue = queue
         self._reporters = reporters
         self.counter = 0
+        self.running = True
         super().__init__()
 
 
@@ -122,6 +122,7 @@ class StreamStatisticsRunner(Thread):
             for reporter in self._reporters:
                 reporter.process_message(json.loads(message))
             self.counter += 1
+        self.running = False
 
 class MessagesPerSecondMetric(Thread):
 
@@ -130,7 +131,7 @@ class MessagesPerSecondMetric(Thread):
         super().__init__()
 
     def run(self):
-        while True:
+        while self.ssr.running:
             pre = self.ssr.counter
             pre_time = time.time()
             time.sleep(1)

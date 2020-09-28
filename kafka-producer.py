@@ -21,9 +21,11 @@ def create_producer(server):
     return Producer({'bootstrap.servers': server})
 
 counter = 0
+done = False
 
 def run():
     global counter
+    global done
     topic, server = parse_args()
     producer = create_producer(server)
     for i, line in enumerate(sys.stdin):
@@ -32,10 +34,13 @@ def run():
             producer.flush()
         counter += 1
         producer.produce(topic, line.encode('utf-8'))
+    done = True
+
 
 def metric():
     global counter
-    while True:
+    global done
+    while not done:
         pre = counter
         pre_time = time.time()
         time.sleep(1)

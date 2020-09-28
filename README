@@ -35,6 +35,10 @@ I have used pv to measure the speed of all the joint-points of the pipeline. The
 
 Given that every computer is different, absolute metrics are not relevant. I will thus only mention relative comparations. On the pipeline I offer here, I experienced a 4x slowdown of the processed lines per second compared to the input lines per second. Of this, half of the delay I attribute it to JSON parsing, and the other half to business logic (mostly operations on the bloom filter). The delay on JSON parsing was also checked against the well-proven tool 'jq', which did show a similar slowdown rate. The slowdown caused by the data structure is closely related to the chosen error tolerance, as a smaller error tollerance will increase the space-use and the computation time of the underlying hash functions.
 
+## Reporting metrics
+
+The scripts print their frames/second on stdout. 'Send' messages correspond to the Kafka line producer, ' Process' corresponds to the unique-users-per-minute script, and 'Received' will send the statistic (unique-users-per-interval). These outputs can be redirected to separate files by modifying 'run.sh' if wanted.
+
 ## Serialization
 
 JSON is definitely not the most ideal format for this specific problem. Although there exist some parsers that will extract the target value and skip the remaining JSON string, this is not common in most widely available libraries. In my experience, a format such as Protobuf of Capnproto would make extracting the uid and ts much faster. A binary fomrat would also make the size of the input smaller and make network transmission faster.
