@@ -55,7 +55,7 @@ class StatisticsHolder:
         self.counter = 0
         self.start_ts = start_ts
         self.end_ts = end_ts
-        self.filter = BloomFilter(max_elements=20000, error_rate=0.01)
+        self.filter = BloomFilter(max_elements=50000, error_rate=0.01)
 
     def add(self, uid):
         if uid not in self.filter:
